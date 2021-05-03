@@ -1,3 +1,6 @@
+import os
+
+from flask import Flask, request
 import telebot
 
 import roleplay
@@ -90,4 +93,22 @@ def stats(msg):
             s += f'{t[0]} {t[1]} {t[2]} {t[3]} раз\n'
         bot.send_message(chat_id, s, parse_mode='Markdown')
 
-bot.polling()
+
+if 'HEROKU' in list(os.environ.keys()):
+    logger = telebot.logger
+    telebot.logger.setLevel(logging.INFO)
+
+    server = Flask(__name__)
+    @server.route('/bot', methods=['POST'])
+    def getMessage():
+        bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode('utf-8'))])
+        return '!', 200
+    @server.route('/')
+    def webhook():
+        bot.remove_webhook()
+        bot.set_webhook(url='https://murmuring-savannah-80214.herokuapp.com/bot')
+        return '?', 200
+    server.run(host='0.0.0.0', port=os.environ.get('PORT', 80))
+else:
+    bot.remove_webhook()
+    bot.polling()
