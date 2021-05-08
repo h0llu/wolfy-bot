@@ -1,9 +1,8 @@
 import logging
 import os
-import requests
 
 import telebot
-from flask import Flask
+from flask import Flask, request
 
 import keyboard
 import controller
