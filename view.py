@@ -218,7 +218,7 @@ def main():
             bot.remove_webhook()
             bot.set_webhook(url='https://murmuring-savannah-80214.herokuapp.com/bot')
             return '?', 200
-            server.run(host='0.0.0.0', port=os.environ.get('PORT', 80))
+        server.run(host='0.0.0.0', port=os.environ.get('PORT', 80))
     else:
         bot.remove_webhook()
         bot.polling()
