@@ -1,7 +1,8 @@
-import ast
-from dbworker import Commands
+import logging
+import os
 
 import telebot
+from flask import Flask
 
 import keyboard
 import controller
@@ -203,7 +204,24 @@ def del_command(call):
 
 
 def main():
-    bot.polling()
+    if 'HEROKU' in list(os.environ.keys()):
+        logger = telebot.logger
+        telebot.logger.setLevel(logging.INFO)
+
+        server = Flask(__name__)
+        @server.route('/bot', methods=['POST'])
+        def getMessage():
+            bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode('utf-8'))])
+            return '!', 200
+        @server.route('/')
+        def webhook():
+            bot.remove_webhook()
+            bot.set_webhook(url='https://murmuring-savannah-80214.herokuapp.com/bot')
+            return '?', 200
+            server.run(host='0.0.0.0', port=os.environ.get('PORT', 80))
+    else:
+        bot.remove_webhook()
+        bot.polling()
 
 if __name__ == '__main__':
     main()
