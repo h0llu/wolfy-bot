@@ -92,6 +92,11 @@ class Commands:
         self.cursor.execute(stmt)
         self.conn.commit()
 
+    def drop(self) -> None:
+        stmt = 'DELETE FROM actions'
+        self.cursor.execute(stmt)
+        self.conn.commit()
+
     def add(self, action: str, command: str, direction: str) -> None:
         stmt = '''INSERT OR IGNORE INTO actions
         VALUES (?,?,?)'''

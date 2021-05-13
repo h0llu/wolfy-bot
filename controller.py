@@ -34,6 +34,9 @@ def get_user_action(user_id: int) -> str:
 # ///////////////////////////////////////////////////////////////////////////
 # COMMANDS
 
+def drop_commands() -> None:
+    commands.drop()
+
 def get_singles() -> list:
     return commands.get_singles()
 

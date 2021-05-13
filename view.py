@@ -201,6 +201,11 @@ def del_command(call):
 
 # ///////////////////////////////////////////////////////////////////////////////////////////
 
+@bot.message_handler(commands=['drop'])
+def drop_db(msg):
+    controller.drop_commands()
+    bot.send_message(msg.chat.id, 'DB dropped successfully')
+
 
 
 def main():
