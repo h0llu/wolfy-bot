@@ -24,16 +24,6 @@ def auth(func):
 
     return wrapper
 
-def vanya_auth(func):
-    def wrapper(msg):
-        if msg.from_user.id == 263714017:
-            bot.send_message(msg.chat.id, 'Access Denied')
-            msg.text = ''
-            return
-        return func(msg)
-
-    return wrapper
-
 # ///////////////////////////////////////////////////////////////////////////////////////////
 
 @bot.callback_query_handler(func=lambda call: call.data == 'close')
@@ -41,6 +31,10 @@ def close(call):
     bot.delete_message(call.message.chat.id, call.message.message_id)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////
+
+@bot.message_handler(func=lambda msg: msg.text == '@all')
+def tag_all(msg):
+    bot.send_message(msg.chat.id, '@h0llu @zdesbilaksenia @ivankot13 @I_am_arti @v_pozdn')
 
 @bot.message_handler(commands=['all'])
 @auth
